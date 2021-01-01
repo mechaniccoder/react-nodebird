@@ -3,5 +3,6 @@
   "printWidth": 80,
   "bracketSpacing": true,
   "singleQuote": true,
-  "semi": true
+  "semi": true,
+  "endOfLine": "auto"
 }
