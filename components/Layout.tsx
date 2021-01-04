@@ -1,12 +1,16 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { Menu } from 'antd';
+import { Input, Menu, Row, Col } from 'antd';
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
+import styled from 'styled-components';
 
 interface Props {
   children: ReactNode | string;
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div>
       <Menu mode="horizontal">
@@ -14,6 +18,10 @@ const Layout: React.FC<Props> = ({ children }) => {
           <Link href="/">
             <a>노드버드</a>
           </Link>
+        </Menu.Item>
+
+        <Menu.Item>
+          <SearchInput enterButton />
         </Menu.Item>
 
         <Menu.Item>
@@ -28,9 +36,22 @@ const Layout: React.FC<Props> = ({ children }) => {
           </Link>
         </Menu.Item>
       </Menu>
-      <main>{children}</main>
+
+      <Row gutter={8}>
+        <Col xs={24} md={6}>
+          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}></Col>
+      </Row>
     </div>
   );
 };
 
 export default Layout;
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
