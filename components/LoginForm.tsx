@@ -37,7 +37,7 @@ const LoginForm = () => {
         <Button type="primary" htmlType="submit" onClick={handleOnSubmit}>
           로그인
         </Button>
-        <Link href="/signup">
+        <Link href="/signup" data-test-id="link">
           <a>회원가입</a>
         </Link>
       </ButtonContainer>
