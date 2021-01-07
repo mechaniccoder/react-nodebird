@@ -1,10 +1,12 @@
 module.exports = {
-  presets: [['next/babel', ['@babel/preset-typescript', { isTSX: true }]]],
+  presets: [
+    ['next/babel'],
+    ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
+  ],
   plugins: [
     [
       'module-resolver',
       {
-        root: ['./'],
         alias: {
           '@pages': './pages',
           '@components': './components',
