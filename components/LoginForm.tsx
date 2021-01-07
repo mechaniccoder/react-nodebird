@@ -5,8 +5,8 @@ import useForm from '../hooks/useForm';
 
 const LoginForm = () => {
   const { state, handleOnChange, handleOnSubmit } = useForm();
-
   const { userId, password } = state;
+
   return (
     <Form>
       <div>
