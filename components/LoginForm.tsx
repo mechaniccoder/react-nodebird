@@ -17,7 +17,7 @@ const LoginForm: FC<Props> = ({ setIsLoggedIn }) => {
   }, [setIsLoggedIn]);
 
   return (
-    <FormWrapper onFinish={handleOnSubmit(onSubmit)}>
+    <Form onFinish={handleOnSubmit(onSubmit)}>
       <div>
         <label htmlFor="userId">아이디</label>
         <Input
@@ -43,23 +43,23 @@ const LoginForm: FC<Props> = ({ setIsLoggedIn }) => {
       </div>
 
       <ButtonContainer>
-        <Button type="primary" htmlType="submit" onClick={handleOnSubmit}>
+        <LoginBtn type="primary" htmlType="submit" onClick={handleOnSubmit}>
           로그인
-        </Button>
+        </LoginBtn>
         <Link href="/signup" data-test-id="link">
           <a>회원가입</a>
         </Link>
       </ButtonContainer>
-    </FormWrapper>
+    </Form>
   );
 };
 
 export default LoginForm;
 
-const ButtonContainer = styled.div`
-  margin-top: 10px;
+const LoginBtn = styled(Button)`
+  margin-right: 10px;
 `;
 
-const FormWrapper = styled(Form)`
-  padding: 10px;
+const ButtonContainer = styled.div`
+  margin-top: 10px;
 `;

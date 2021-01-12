@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Input, Menu, Row, Col } from 'antd';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface Props {
   children: ReactNode | string;
@@ -11,6 +11,7 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <div>
       <Menu mode="horizontal">
@@ -37,7 +38,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         </Menu.Item>
       </Menu>
 
-      <Row gutter={8}>
+      <RowWrapper gutter={8}>
         <Col xs={24} md={6}>
           {isLoggedIn ? (
             <UserProfile setIsLoggedIn={setIsLoggedIn} />
@@ -48,8 +49,14 @@ const Layout: React.FC<Props> = ({ children }) => {
         <Col xs={24} md={12}>
           {children}
         </Col>
-        <Col xs={24} md={6}></Col>
-      </Row>
+        <Col xs={24} md={6}>
+          <a
+            href="https://mechaniccoder-27705.web.app/"
+            target="_blank"
+            rel="norefferer noopener"
+          ></a>
+        </Col>
+      </RowWrapper>
     </div>
   );
 };
@@ -58,4 +65,8 @@ export default Layout;
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
+`;
+
+const RowWrapper = styled(Row)`
+  padding: 10px;
 `;
