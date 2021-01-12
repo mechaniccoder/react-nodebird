@@ -1,14 +1,23 @@
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
+import { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import useForm from '../hooks/useForm';
 
-const LoginForm = () => {
+interface Props {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginForm: FC<Props> = ({ setIsLoggedIn }) => {
   const { state, handleOnChange, handleOnSubmit } = useForm();
   const { userId, password } = state;
 
+  const onSubmit = useCallback(() => {
+    setIsLoggedIn(true);
+  }, [setIsLoggedIn]);
+
   return (
-    <Form>
+    <FormWrapper onFinish={handleOnSubmit(onSubmit)}>
       <div>
         <label htmlFor="userId">아이디</label>
         <Input
@@ -41,7 +50,7 @@ const LoginForm = () => {
           <a>회원가입</a>
         </Link>
       </ButtonContainer>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -49,4 +58,8 @@ export default LoginForm;
 
 const ButtonContainer = styled.div`
   margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+  padding: 10px;
 `;

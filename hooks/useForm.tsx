@@ -14,12 +14,9 @@ const useForm = () => {
     []
   );
 
-  const handleOnSubmit = useCallback(
-    (event: React.MouseEvent<HTMLFormElement>) => {
-      event.preventDefault();
-    },
-    []
-  );
+  const handleOnSubmit = (func: any) => {
+    return func;
+  };
 
   return { state, handleOnChange, handleOnSubmit };
 };
