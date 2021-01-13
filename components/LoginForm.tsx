@@ -1,23 +1,22 @@
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { toggleLogInState } from 'store/user';
 import styled from 'styled-components';
 import useForm from '../hooks/useForm';
 
-interface Props {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginForm: FC<Props> = ({ setIsLoggedIn }) => {
-  const { state, handleOnChange, handleOnSubmit } = useForm();
+const LoginForm: FC = () => {
+  const { state, handleOnChange } = useForm();
   const { userId, password } = state;
+  const dispatch = useDispatch();
 
   const onSubmit = useCallback(() => {
-    setIsLoggedIn(true);
-  }, [setIsLoggedIn]);
+    dispatch(toggleLogInState());
+  }, []);
 
   return (
-    <Form onFinish={handleOnSubmit(onSubmit)}>
+    <Form onFinish={onSubmit}>
       <div>
         <label htmlFor="userId">아이디</label>
         <Input
@@ -43,7 +42,7 @@ const LoginForm: FC<Props> = ({ setIsLoggedIn }) => {
       </div>
 
       <ButtonContainer>
-        <LoginBtn type="primary" htmlType="submit" onClick={handleOnSubmit}>
+        <LoginBtn type="primary" htmlType="submit">
           로그인
         </LoginBtn>
         <Link href="/signup" data-test-id="link">

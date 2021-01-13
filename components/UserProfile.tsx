@@ -1,14 +1,13 @@
 import { FC, useCallback } from 'react';
 import { Card, Avatar, Button } from 'antd';
+import { useDispatch } from 'react-redux';
+import { toggleLogInState } from 'store/user';
 
-interface Props {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const UserProfile: FC<Props> = ({ setIsLoggedIn }) => {
+const UserProfile: FC = () => {
+  const dispatch = useDispatch();
   const onLogout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, [setIsLoggedIn]);
+    dispatch(toggleLogInState());
+  }, []);
 
   return (
     <Card

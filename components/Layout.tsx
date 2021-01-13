@@ -1,16 +1,18 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { Input, Menu, Row, Col } from 'antd';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { rootState } from 'store/reducer';
 
 interface Props {
   children: ReactNode | string;
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLogIn } = useSelector(({ user }: rootState) => user);
 
   return (
     <div>
@@ -22,7 +24,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         </Menu.Item>
 
         <Menu.Item>
-          <SearchInput enterButton />
+          <SearchInput.Search enterButton />
         </Menu.Item>
 
         <Menu.Item>
@@ -40,11 +42,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
       <RowWrapper gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? (
-            <UserProfile setIsLoggedIn={setIsLoggedIn} />
-          ) : (
-            <LoginForm setIsLoggedIn={setIsLoggedIn} />
-          )}
+          {isLogIn ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
@@ -54,7 +52,9 @@ const Layout: React.FC<Props> = ({ children }) => {
             href="https://mechaniccoder-27705.web.app/"
             target="_blank"
             rel="norefferer noopener"
-          ></a>
+          >
+            Made by Mechaniccoder
+          </a>
         </Col>
       </RowWrapper>
     </div>
@@ -63,7 +63,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
 export default Layout;
 
-const SearchInput = styled(Input.Search)`
+const SearchInput = styled(Input)`
   vertical-align: middle;
 `;
 
