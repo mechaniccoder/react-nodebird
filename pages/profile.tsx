@@ -17,16 +17,14 @@ const Profile = () => {
   ];
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>프로필 | NodeBird</title>
       </Head>
-      <Layout>
-        <NicknameEditForm />
-        <FollowList title="Followings" data={follwings} />
-        <FollowList title="Follwers" data={follwers} />
-      </Layout>
-    </>
+      <NicknameEditForm />
+      <FollowList title="Followings" data={follwings} />
+      <FollowList title="Follwers" data={follwers} />
+    </Layout>
   );
 };
 

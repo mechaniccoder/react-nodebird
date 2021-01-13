@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 const useForm = () => {
   const [state, setState] = useState({
     userId: '',
+    nickname: '',
     password: '',
   });
 
@@ -14,11 +15,7 @@ const useForm = () => {
     []
   );
 
-  const handleOnSubmit = (func: any) => {
-    return func;
-  };
-
-  return { state, handleOnChange, handleOnSubmit };
+  return { state, handleOnChange };
 };
 
 export default useForm;
