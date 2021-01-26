@@ -14,7 +14,6 @@ const SignUp = () => {
   const handleOnChangePasswordCheck = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setPasswordCheck(event.currentTarget.value);
-      console.log(state);
       setPasswordCheckError(password !== event.currentTarget.value);
     },
     [password]
