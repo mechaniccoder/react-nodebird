@@ -27,7 +27,7 @@ export default function PostForm() {
         maxLength={140}
         placeholder="어떤 일이 있었나요?"
       />
-      <div>
+      <div style={{ marginTop: '6px' }}>
         <input type="file" multiple hidden />
         <Button>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit">
