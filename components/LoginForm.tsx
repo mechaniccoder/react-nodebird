@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleLogInState } from 'store/user';
+import { loginIn } from 'store/user';
 import styled from 'styled-components';
 import useForm from '../hooks/useForm';
 
@@ -12,7 +12,7 @@ const LoginForm: FC = () => {
   const dispatch = useDispatch();
 
   const onSubmit = useCallback(() => {
-    dispatch(toggleLogInState());
+    dispatch(loginIn());
   }, []);
 
   return (

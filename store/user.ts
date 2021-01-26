@@ -1,5 +1,9 @@
-export const toggleLogInState = () => {
-  return { type: 'TOGGLE_LOGIN' };
+export const loginIn = () => {
+  return { type: 'LOG_IN' };
+};
+
+export const logOut = () => {
+  return { type: 'LOG_OUT' };
 };
 
 interface InitialState {
@@ -13,15 +17,23 @@ const initialState: InitialState = {
 };
 
 interface Action {
-  type: 'TOGGLE_LOGIN';
+  type: 'LOG_IN' | 'LOG_OUT';
 }
 
-export default function user(state = initialState, action: Action) {
+export default function user(
+  state = initialState,
+  action: Action
+): InitialState {
   switch (action.type) {
-    case 'TOGGLE_LOGIN':
+    case 'LOG_IN':
       return {
         ...state,
-        isLogIn: !state.isLogIn,
+        isLogIn: true,
+      };
+    case 'LOG_OUT':
+      return {
+        ...state,
+        isLogIn: false,
       };
     default:
       return state;

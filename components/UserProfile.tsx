@@ -1,12 +1,12 @@
 import { FC, useCallback } from 'react';
 import { Card, Avatar, Button } from 'antd';
 import { useDispatch } from 'react-redux';
-import { toggleLogInState } from 'store/user';
+import { logOut } from 'store/user';
 
 const UserProfile: FC = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
-    dispatch(toggleLogInState());
+    dispatch(logOut());
   }, []);
 
   return (
