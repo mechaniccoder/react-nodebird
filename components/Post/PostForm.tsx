@@ -1,11 +1,16 @@
 import { Button, Form, Input } from 'antd';
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPost } from 'store/post';
 import { rootState } from 'store/reducer';
 
 export default function PostForm() {
   const [text, setText] = useState('');
-  const onSubmit = useCallback(() => {}, []);
+  const imageInput = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const onSubmit = useCallback(() => {
+    dispatch(addPost());
+  }, []);
   const { imagePaths } = useSelector((state: rootState) => state.post);
 
   const onChangeText = useCallback(
@@ -14,6 +19,12 @@ export default function PostForm() {
     },
     []
   );
+
+  const onClickImageInput = useCallback(() => {
+    if (imageInput.current) {
+      imageInput.current.click();
+    }
+  }, []);
 
   return (
     <Form
@@ -28,8 +39,8 @@ export default function PostForm() {
         placeholder="어떤 일이 있었나요?"
       />
       <div style={{ marginTop: '6px' }}>
-        <input type="file" multiple hidden />
-        <Button>이미지 업로드</Button>
+        <input type="file" multiple hidden ref={imageInput} />
+        <Button onClick={onClickImageInput}>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit">
           짹짹
         </Button>
