@@ -1,9 +1,4 @@
-interface MainPost {
-  id: number;
-  User: { id: number; nickname: string };
-  content: string;
-  Images: { src: string }[];
-}
+import { MainPost } from 'type';
 
 interface InitialPost {
   mainPosts: MainPost[];
@@ -38,13 +33,15 @@ const initialPost: InitialPost = {
 
 const dummyPost: MainPost = {};
 
-export const addPost = {
-  type: 'ADD_POST',
-};
+const ADD_POST = 'post/add_post';
+
+export const addPost = () => ({
+  type: ADD_POST,
+});
 
 export default function post(state = initialPost, action: any): InitialPost {
   switch (action.type) {
-    case 'ADD_POST':
+    case ADD_POST:
       return {
         ...state,
         mainPosts: [dummyPost, ...state.mainPosts],
