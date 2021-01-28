@@ -1,5 +1,5 @@
 export const loginIn = () => {
-  return { type: 'LOG_IN' };
+  return { type: 'LOG_IN', payload: { id: 4 } };
 };
 
 export const logOut = () => {
@@ -8,16 +8,17 @@ export const logOut = () => {
 
 interface InitialState {
   isLogIn: boolean;
-  user: null;
+  me: { id: number } | null;
 }
 
 const initialState: InitialState = {
   isLogIn: false,
-  user: null,
+  me: null,
 };
 
 interface Action {
   type: 'LOG_IN' | 'LOG_OUT';
+  payload: any;
 }
 
 export default function user(
@@ -29,11 +30,13 @@ export default function user(
       return {
         ...state,
         isLogIn: true,
+        me: action.payload,
       };
     case 'LOG_OUT':
       return {
         ...state,
         isLogIn: false,
+        me: null,
       };
     default:
       return state;
