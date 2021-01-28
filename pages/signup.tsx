@@ -1,5 +1,6 @@
 import Layout from '@components/Layout';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import useForm from 'hooks/useForm';
 import Head from 'next/head';
 import { useCallback, useState } from 'react';
@@ -21,7 +22,7 @@ const SignUp = () => {
 
   const [term, setTerm] = useState(false);
   const [termError, setTermError] = useState(false);
-  const handleOnChangeTerm = useCallback((event: any) => {
+  const handleOnChangeTerm = useCallback((event: CheckboxChangeEvent) => {
     setTerm(event.target.checked);
     setTermError(false);
   }, []);
