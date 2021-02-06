@@ -5,11 +5,12 @@ import {
   MessageOutlined,
   RetweetOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, Popover } from 'antd';
+import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
 import { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { rootState } from 'store/reducer';
 import { MainPost } from 'type';
+import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 
 interface Props {
@@ -70,7 +71,25 @@ const PostCard: FC<Props> = ({ post }) => {
           description={post.content}
         />
       </Card>
-      {commentFormVisible && <div>comment form</div>}
+      {commentFormVisible && (
+        <div>
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length}개의 댓글이 있습니다.`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  content={item.text}
+                  author={item.nickname}
+                  avatar={<Avatar>{item.nickname[0]}</Avatar>}
+                />
+              </li>
+            )}
+          />
+        </div>
+      )}
     </div>
   );
 };
