@@ -10,6 +10,7 @@ module.exports = {
         alias: {
           '@pages': './pages',
           '@components': './components',
+          '@store': './store',
         },
       },
     ],
