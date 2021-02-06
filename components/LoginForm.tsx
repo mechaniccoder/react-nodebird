@@ -56,7 +56,7 @@ const LoginForm: FC = () => {
 export default LoginForm;
 
 const LoginBtn = styled(Button)`
-  margin-right: 10px;
+  margin-right: 20px;
 `;
 
 const ButtonContainer = styled.div`
