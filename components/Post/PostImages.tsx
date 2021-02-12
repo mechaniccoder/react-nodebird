@@ -1,4 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
+import ImagesZoom from '@components/ImagesZoom';
 import { FC, useCallback, useState } from 'react';
 import { Image } from 'type';
 
@@ -12,18 +13,25 @@ const PostImages: FC<Props> = ({ images }) => {
     setShowImagesZoom((prevShowImagesZoom) => !prevShowImagesZoom);
   }, []);
 
+  const onClose = useCallback(() => {
+    setShowImagesZoom(false);
+  }, []);
+
   if (images.length === 1) {
     return (
-      <img
-        style={{ maxHeight: '60vh', objectFit: 'contain' }}
-        src={images[0].src}
-        alt={images[0].src}
-        onClick={onZoom}
-      />
+      <>
+        <img
+          style={{ maxHeight: '60vh', objectFit: 'contain' }}
+          src={images[0].src}
+          alt={images[0].src}
+          onClick={onZoom}
+        />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
+      </>
     );
   }
 
-  if (images.length === 3) {
+  if (images.length === 2) {
     return (
       <>
         <img
@@ -43,6 +51,7 @@ const PostImages: FC<Props> = ({ images }) => {
           alt={images[1].src}
           onClick={onZoom}
         />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
@@ -67,6 +76,7 @@ const PostImages: FC<Props> = ({ images }) => {
         <br />
         {`${images.length - 1}개의 사진 더보기`}
       </div>
+      {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
     </>
   );
 };
