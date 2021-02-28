@@ -35,8 +35,6 @@ const SignUp = () => {
     if (!term) {
       setTermError(true);
     }
-
-    console.log(userId, nickname, password, passwordCheck);
   }, [password, passwordCheck, term]);
 
   return (

@@ -43,7 +43,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
       <RowWrapper gutter={8}>
         <Col xs={24} md={6}>
-          {isLogIn ? <UserProfile /> : <LoginForm />}
+          {isLogIn === true ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}

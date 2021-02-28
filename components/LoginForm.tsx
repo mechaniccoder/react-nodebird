@@ -1,7 +1,8 @@
+import { rootState } from '@store/reducer';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginIn } from 'store/user';
 import styled from 'styled-components';
 import useForm from '../hooks/useForm';
@@ -10,6 +11,7 @@ const LoginForm: FC = () => {
   const { state, handleOnChange } = useForm();
   const { userId, password } = state;
   const dispatch = useDispatch();
+  const isLogIn = useSelector((state: rootState) => state.user.isLogIn);
 
   const onSubmit = useCallback(() => {
     dispatch(loginIn());
@@ -42,7 +44,11 @@ const LoginForm: FC = () => {
       </div>
 
       <ButtonContainer>
-        <LoginBtn type="primary" htmlType="submit">
+        <LoginBtn
+          type="primary"
+          htmlType="submit"
+          loading={isLogIn === 'loading'}
+        >
           로그인
         </LoginBtn>
         <Link href="/signup" data-test-id="link">

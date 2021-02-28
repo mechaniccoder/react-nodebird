@@ -2,7 +2,8 @@ import { FC } from 'react';
 import { Provider } from 'react-redux';
 import Head from 'next/head';
 import 'antd/dist/antd.css';
-import { useStore } from 'store';
+import { useStore } from '../store';
+import withReduxSaga from 'next-redux-saga';
 
 interface Props {
   Component: any;
