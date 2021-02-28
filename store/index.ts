@@ -1,15 +1,25 @@
 import { useMemo } from 'react';
-import { createStore, applyMiddleware, Store } from 'redux';
+import { createStore, applyMiddleware, Store, Dispatch, Action } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { rootReducer } from './reducer';
+import thunkMiddleware from 'redux-thunk';
 
 let store: Store | undefined | null;
 
+const logger = (dispatch: Dispatch, getState: any) => (next: any) => (
+  action: Action
+) => {
+  console.log(action);
+  return next(action);
+};
+
 function initStore(preloadedState: any) {
+  const middlewares: any = [logger, thunkMiddleware];
+
   return createStore(
     rootReducer,
     preloadedState,
-    composeWithDevTools(applyMiddleware())
+    composeWithDevTools(applyMiddleware(...middlewares))
   );
 }
 
