@@ -1,28 +1,36 @@
+import {
+  login_failure,
+  login_request,
+  login_success,
+  logout_failure,
+  logout_request,
+  logout_success,
+} from '@store/user';
 import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
 
-function* login(action: { type: string; payload: any }) {
+function* login() {
   try {
     yield delay(2000);
-    yield put({ type: 'LOGIN_SUCCESS', payload: { nickname: '승환', id: 4 } });
+    yield put({ type: login_success, payload: { nickname: '승환', id: 4 } });
   } catch (error) {
-    yield put({ type: 'LOGIN_FAILURE', payload: error.message });
+    yield put({ type: login_failure, payload: error });
   }
 }
 
 function* watchLogin() {
-  yield takeLatest('LOG_IN', login);
+  yield takeLatest(login_request, login);
 }
 
 function* logout() {
   try {
-    yield put({ type: 'LOGOUT_SUCCESS' });
+    yield put({ type: logout_success });
   } catch (error) {
-    yield put({ type: 'LOGOUT_FAILURE', payload: error.message });
+    yield put({ type: logout_failure, payload: error.message });
   }
 }
 
 function* watchLogout() {
-  yield takeLatest('LOG_OUT', logout);
+  yield takeLatest(logout_request, logout);
 }
 
 export default function* userSaga() {

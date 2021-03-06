@@ -3,7 +3,7 @@ import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginIn } from 'store/user';
+import { loginInRequest } from 'store/user';
 import styled from 'styled-components';
 import useForm from '../hooks/useForm';
 
@@ -11,11 +11,11 @@ const LoginForm: FC = () => {
   const { state, handleOnChange } = useForm();
   const { userId, password } = state;
   const dispatch = useDispatch();
-  const isLogIn = useSelector((state: rootState) => state.user.isLogIn);
+  const loading = useSelector((state: rootState) => state.user.loading);
 
   const onSubmit = useCallback(() => {
-    dispatch(loginIn());
-  }, []);
+    dispatch(loginInRequest());
+  }, [dispatch, loginInRequest]);
 
   return (
     <Form onFinish={onSubmit}>
@@ -44,11 +44,7 @@ const LoginForm: FC = () => {
       </div>
 
       <ButtonContainer>
-        <LoginBtn
-          type="primary"
-          htmlType="submit"
-          loading={isLogIn === 'loading'}
-        >
+        <LoginBtn type="primary" htmlType="submit" loading={loading}>
           로그인
         </LoginBtn>
         <Link href="/signup" data-test-id="link">

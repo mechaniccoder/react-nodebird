@@ -1,12 +1,14 @@
 import { MainPost } from 'type';
 
 export interface InitialPost {
+  loading: boolean;
   mainPosts: MainPost[];
   imagePaths: string[];
   postAdded: boolean;
 }
 
 const initialPost: InitialPost = {
+  loading: false,
   mainPosts: [
     {
       id: 1,
@@ -59,21 +61,34 @@ const dummyPost: MainPost = {
   ],
 };
 
-const ADD_POST = 'post/add_post';
+const ADD_POST_REQUEST = 'post/add_post_request';
+const ADD_POST_SUCCESS = 'post/add_post_success';
+const ADD_POST_FAILURE = 'post/add_post_failure';
 
-export const addPost = () => ({
-  type: ADD_POST,
+export const addPost = (data: MainPost) => ({
+  type: ADD_POST_REQUEST,
+  payload: data,
 });
 
 export default function post(state = initialPost, action: any): InitialPost {
   switch (action.type) {
-    case ADD_POST:
+    case ADD_POST_REQUEST:
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        loading: true,
+      };
+    case ADD_POST_SUCCESS:
+      return {
+        ...state,
+        mainPosts: [action.payload, ...state.mainPosts],
+        loading: false,
+      };
+    case ADD_POST_FAILURE:
+      return {
+        ...state,
+        loading: false,
       };
     default:
       return state;
   }
-  return state;
 }

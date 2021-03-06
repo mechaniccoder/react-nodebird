@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const { isLogIn } = useSelector(({ user }: rootState) => user);
+  const { me } = useSelector(({ user }: rootState) => user);
 
   return (
     <div>
@@ -43,7 +43,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
       <RowWrapper gutter={8}>
         <Col xs={24} md={6}>
-          {isLogIn === true ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
