@@ -6,12 +6,24 @@ export const logout_request = 'user/logout_request';
 export const logout_success = 'user/logout_success';
 export const logout_failure = 'user/logout_failure';
 
+export const signup_request = 'user/signup_request';
+export const signup_success = 'user/signup_success';
+export const signup_failure = 'user/signup_failure';
+
 export const loginInRequest = () => {
   return { type: login_request };
 };
 
 export const logOutRequest = () => {
   return { type: logout_request };
+};
+
+export const signupRequest = (data: {
+  email: string;
+  nickname: string;
+  password: string;
+}) => {
+  return { type: signup_request, payload: data };
 };
 
 interface InitialState {
@@ -54,7 +66,10 @@ interface Action {
     | typeof login_failure
     | typeof logout_request
     | typeof logout_success
-    | typeof logout_failure;
+    | typeof logout_failure
+    | typeof signup_request
+    | typeof signup_success
+    | typeof signup_failure;
   payload: any;
 }
 
@@ -63,6 +78,25 @@ export default function user(
   action: Action
 ): InitialState {
   switch (action.type) {
+    case signup_request:
+      return {
+        ...state,
+        loading: true,
+        me: null,
+        error: null,
+      };
+    case signup_success:
+      return {
+        ...state,
+        loading: false,
+      };
+    case signup_failure:
+      return {
+        ...state,
+        loading: false,
+        me: null,
+        error: action.payload,
+      };
     case login_request:
       return {
         ...state,

@@ -1,14 +1,17 @@
 import Layout from '@components/Layout';
+import { signup_request } from '@store/user';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import useForm from 'hooks/useForm';
 import Head from 'next/head';
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 const SignUp = () => {
   const { state, handleOnChange } = useForm();
   const { userId, nickname, password } = state;
+  const dispatch = useDispatch();
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState(false);
@@ -35,6 +38,15 @@ const SignUp = () => {
     if (!term) {
       setTermError(true);
     }
+
+    dispatch({
+      type: signup_request,
+      payload: {
+        email: userId,
+        nickname,
+        password,
+      },
+    });
   }, [password, passwordCheck, term]);
 
   return (

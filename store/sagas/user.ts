@@ -5,8 +5,13 @@ import {
   logout_failure,
   logout_request,
   logout_success,
+  signup_failure,
+  signup_request,
+  signup_success,
 } from '@store/user';
-import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import fetch from 'node-fetch';
+import { Action } from 'redux';
+import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
 
 function* login() {
   try {
@@ -33,6 +38,33 @@ function* watchLogout() {
   yield takeLatest(logout_request, logout);
 }
 
+function signupApi(data: {
+  email: string;
+  nickname: string;
+  password: string;
+}) {
+  fetch('http://localhost:4000/auth/signup', {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+function* signup(action: { type: typeof signup_request; payload: any }): any {
+  try {
+    const res = yield call(signupApi, action.payload);
+    yield put({ type: signup_success, payload: res.data });
+  } catch (error) {
+    yield put({ type: signup_failure, payload: error });
+  }
+}
+
+function* watchSignup() {
+  yield takeLatest(signup_request, signup);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLogout), fork(watchLogin)]);
+  yield all([fork(watchLogout), fork(watchLogin), fork(watchSignup)]);
 }
