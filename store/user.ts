@@ -35,12 +35,16 @@ interface InitialState {
     Followings: any[];
   } | null;
   error: string | null;
+  signupLoading: boolean;
+  signupError: string | null;
 }
 
 const initialState: InitialState = {
   loading: false,
   me: null,
   error: null,
+  signupLoading: false,
+  signupError: null,
 };
 
 interface Me {
@@ -81,21 +85,22 @@ export default function user(
     case signup_request:
       return {
         ...state,
-        loading: true,
         me: null,
         error: null,
+        signupLoading: true,
+        signupError: null,
       };
     case signup_success:
       return {
         ...state,
-        loading: false,
+        signupLoading: false,
       };
     case signup_failure:
       return {
         ...state,
-        loading: false,
         me: null,
-        error: action.payload,
+        signupLoading: false,
+        signupError: action.payload,
       };
     case login_request:
       return {

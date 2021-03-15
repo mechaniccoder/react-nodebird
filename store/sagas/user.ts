@@ -43,21 +43,29 @@ function signupApi(data: {
   nickname: string;
   password: string;
 }) {
-  fetch('http://localhost:4000/auth/signup', {
+  return fetch('http://localhost:4000/auth/signup', {
     method: 'post',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
     },
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((data) => {
+        throw new Error(data);
+      });
+    }
+
+    return res.json();
   });
 }
 
 function* signup(action: { type: typeof signup_request; payload: any }): any {
   try {
     const res = yield call(signupApi, action.payload);
-    yield put({ type: signup_success, payload: res.data });
+    yield put({ type: signup_success, payload: res });
   } catch (error) {
-    yield put({ type: signup_failure, payload: error });
+    yield put({ type: signup_failure, payload: error.message });
   }
 }
 
