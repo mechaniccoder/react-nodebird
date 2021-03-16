@@ -11,11 +11,25 @@ import {
 } from '@store/user';
 import fetch from 'node-fetch';
 import { Action } from 'redux';
-import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
-function* login() {
+function loginApi(data: { email: string; password: string }) {
+  return fetch('http://localhost:4000/auth/login', {
+    method: 'post',
+    body: JSON.stringify(data),
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((error) => {
+        throw new Error(error);
+      });
+    }
+    return res.json();
+  });
+}
+
+function* login(action: { type: typeof login_request; payload: any }) {
   try {
-    yield delay(2000);
+    yield call(loginApi, action.payload);
     yield put({ type: login_success, payload: { nickname: '승환', id: 4 } });
   } catch (error) {
     yield put({ type: login_failure, payload: error });

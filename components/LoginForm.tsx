@@ -9,23 +9,25 @@ import useForm from '../hooks/useForm';
 
 const LoginForm: FC = () => {
   const { state, handleOnChange } = useForm();
-  const { userId, password } = state;
+  const { email, password } = state;
   const dispatch = useDispatch();
-  const loading = useSelector((state: rootState) => state.user.loading);
+  const loginLoading = useSelector(
+    (state: rootState) => state.user.loginLoading
+  );
 
   const onSubmit = useCallback(() => {
-    dispatch(loginInRequest());
-  }, [dispatch, loginInRequest]);
+    dispatch(loginInRequest(email, password));
+  }, [dispatch, email, password]);
 
   return (
     <Form onFinish={onSubmit}>
       <div>
-        <label htmlFor="userId">아이디</label>
+        <label htmlFor="email">아이디</label>
         <Input
-          id="userId"
+          id="email"
           type="text"
-          name="userId"
-          value={userId}
+          name="email"
+          value={email}
           onChange={handleOnChange}
           required
         />
@@ -44,7 +46,7 @@ const LoginForm: FC = () => {
       </div>
 
       <ButtonContainer>
-        <LoginBtn type="primary" htmlType="submit" loading={loading}>
+        <LoginBtn type="primary" htmlType="submit" loading={loginLoading}>
           로그인
         </LoginBtn>
         <Link href="/signup" data-test-id="link">

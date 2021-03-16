@@ -10,8 +10,8 @@ export const signup_request = 'user/signup_request';
 export const signup_success = 'user/signup_success';
 export const signup_failure = 'user/signup_failure';
 
-export const loginInRequest = () => {
-  return { type: login_request };
+export const loginInRequest = (email: string, password: string) => {
+  return { type: login_request, payload: { email, password } };
 };
 
 export const logOutRequest = () => {
@@ -35,6 +35,8 @@ interface InitialState {
     Followings: any[];
   } | null;
   error: string | null;
+  loginLoading: boolean;
+  loginError: string | null;
   signupLoading: boolean;
   signupError: string | null;
 }
@@ -43,6 +45,8 @@ const initialState: InitialState = {
   loading: false,
   me: null,
   error: null,
+  loginLoading: false,
+  loginError: null,
   signupLoading: false,
   signupError: null,
 };
@@ -105,23 +109,23 @@ export default function user(
     case login_request:
       return {
         ...state,
-        loading: true,
+        loginLoading: true,
         me: null,
-        error: null,
+        loginError: null,
       };
     case login_success:
       return {
         ...state,
-        loading: false,
+        loginLoading: false,
         me: parseMe(action.payload),
-        error: null,
+        loginError: null,
       };
     case login_failure:
       return {
         ...state,
-        loading: false,
+        loginLoading: false,
         me: null,
-        error: action.payload,
+        loginError: action.payload,
       };
     case logout_request:
       return {
