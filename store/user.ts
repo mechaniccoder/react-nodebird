@@ -62,8 +62,8 @@ const parseMe = (data: Me): Me => {
   return {
     id: data.id,
     nickname: data.nickname,
-    Followers: [],
-    Followings: [],
+    Followers: data.Followers,
+    Followings: data.Followings,
   };
 };
 

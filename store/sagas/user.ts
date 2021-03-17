@@ -10,27 +10,31 @@ import {
   signup_success,
 } from '@store/user';
 import fetch from 'node-fetch';
-import { Action } from 'redux';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
 function loginApi(data: { email: string; password: string }) {
   return fetch('http://localhost:4000/auth/login', {
     method: 'post',
     body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   }).then((res) => {
     if (!res.ok) {
       return res.json().then((error) => {
         throw new Error(error);
       });
     }
+
     return res.json();
   });
 }
 
-function* login(action: { type: typeof login_request; payload: any }) {
+function* login(action: { type: typeof login_request; payload: any }): any {
   try {
-    yield call(loginApi, action.payload);
-    yield put({ type: login_success, payload: { nickname: '승환', id: 4 } });
+    const res = yield call(loginApi, action.payload);
+    console.log('res', res);
+    yield put({ type: login_success, payload: res });
   } catch (error) {
     yield put({ type: login_failure, payload: error });
   }
