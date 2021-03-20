@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 const useForm = () => {
   const [state, setState] = useState({
-    userId: '',
+    email: '',
     nickname: '',
     password: '',
   });

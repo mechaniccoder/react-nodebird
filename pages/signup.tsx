@@ -1,17 +1,22 @@
 import Layout from '@components/Layout';
+import { rootState } from '@store/reducer';
 import { signup_request } from '@store/user';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import useForm from 'hooks/useForm';
 import Head from 'next/head';
-import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const SignUp = () => {
   const { state, handleOnChange } = useForm();
-  const { userId, nickname, password } = state;
+  const { email, nickname, password } = state;
   const dispatch = useDispatch();
+  const signupError = useSelector((state: rootState) => state.user.signupError);
+  const signupLoading = useSelector(
+    (state: rootState) => state.user.signupLoading
+  );
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState(false);
@@ -31,23 +36,34 @@ const SignUp = () => {
   }, []);
 
   const onSubmit = useCallback(() => {
+    const emailRegex = /[0-9a-zA-Z-_.]+@[0-9a-zA-Z-_.]+\.[0-9a-zA-Z-_.]+/;
+    if (!emailRegex.test(email)) {
+      return alert('Email validation error');
+    }
+
     if (password !== passwordCheck) {
-      setPasswordCheckError(true);
+      return setPasswordCheckError(true);
     }
 
     if (!term) {
-      setTermError(true);
+      return setTermError(true);
     }
 
     dispatch({
       type: signup_request,
       payload: {
-        email: userId,
+        email,
         nickname,
         password,
       },
     });
-  }, [password, passwordCheck, term]);
+  }, [email, nickname, password, passwordCheck, term, dispatch]);
+
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError]);
 
   return (
     <Layout>
@@ -56,11 +72,11 @@ const SignUp = () => {
       </Head>
       <Form onFinish={onSubmit}>
         <div>
-          <label htmlFor="userId">아이디</label>
+          <label htmlFor="email">아이디</label>
           <br />
           <Input
-            name="userId"
-            value={userId}
+            name="email"
+            value={email}
             onChange={handleOnChange}
             required
           />
@@ -76,7 +92,7 @@ const SignUp = () => {
 
           <label htmlFor="password">비밀번호</label>
           <br />
-          <Input
+          <Input.Password
             name="password"
             value={password}
             onChange={handleOnChange}
@@ -85,7 +101,7 @@ const SignUp = () => {
 
           <label htmlFor="passwordCheck">비밀번호 확인</label>
           <br />
-          <Input
+          <Input.Password
             name="passwordCheck"
             value={passwordCheck}
             onChange={handleOnChangePasswordCheck}
@@ -104,7 +120,7 @@ const SignUp = () => {
         </CheckboxWrapper>
 
         <div>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={signupLoading}>
             가입하기
           </Button>
         </div>

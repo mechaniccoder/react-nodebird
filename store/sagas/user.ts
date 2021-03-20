@@ -10,13 +10,31 @@ import {
   signup_success,
 } from '@store/user';
 import fetch from 'node-fetch';
-import { Action } from 'redux';
-import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
-function* login() {
+function loginApi(data: { email: string; password: string }) {
+  return fetch('http://localhost:4000/auth/login', {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((error) => {
+        throw new Error(error);
+      });
+    }
+
+    return res.json();
+  });
+}
+
+function* login(action: { type: typeof login_request; payload: any }): any {
   try {
-    yield delay(2000);
-    yield put({ type: login_success, payload: { nickname: '승환', id: 4 } });
+    const res = yield call(loginApi, action.payload);
+    console.log('res', res);
+    yield put({ type: login_success, payload: res });
   } catch (error) {
     yield put({ type: login_failure, payload: error });
   }
@@ -43,7 +61,6 @@ function signupApi(data: {
   nickname: string;
   password: string;
 }) {
-  // This is how we can implement error handling with custom message.
   return fetch('http://localhost:4000/auth/signup', {
     method: 'post',
     body: JSON.stringify(data),
@@ -52,10 +69,11 @@ function signupApi(data: {
     },
   }).then((res) => {
     if (!res.ok) {
-      return res.json().then((res) => {
-        throw res;
+      return res.json().then((data) => {
+        throw new Error(data);
       });
     }
+
     return res.json();
   });
 }
@@ -63,10 +81,9 @@ function signupApi(data: {
 function* signup(action: { type: typeof signup_request; payload: any }): any {
   try {
     const res = yield call(signupApi, action.payload);
-    console.log(res);
-    yield put({ type: signup_success, payload: res.data });
+    yield put({ type: signup_success, payload: res });
   } catch (error) {
-    yield put({ type: signup_failure, payload: error });
+    yield put({ type: signup_failure, payload: error.message });
   }
 }
 
