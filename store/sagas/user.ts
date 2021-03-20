@@ -43,18 +43,27 @@ function signupApi(data: {
   nickname: string;
   password: string;
 }) {
-  fetch('http://localhost:4000/auth/signup', {
+  // This is how we can implement error handling with custom message.
+  return fetch('http://localhost:4000/auth/signup', {
     method: 'post',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
     },
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((res) => {
+        throw res;
+      });
+    }
+    return res.json();
   });
 }
 
 function* signup(action: { type: typeof signup_request; payload: any }): any {
   try {
     const res = yield call(signupApi, action.payload);
+    console.log(res);
     yield put({ type: signup_success, payload: res.data });
   } catch (error) {
     yield put({ type: signup_failure, payload: error });
