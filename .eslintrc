@@ -15,18 +15,14 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
+    "prettier/recommended",
     "plugin:prettier/recommended"
   ],
   "plugins": ["import", "react", "react-hooks"],
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "auto"
-      }
-    ],
+    "prettier/prettier": 2,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react-hooks/exhaustive-deps": "warn"
   }

@@ -38,6 +38,7 @@ interface InitialState {
   loginLoading: boolean;
   loginError: string | null;
   signupLoading: boolean;
+  signupDone: boolean;
   signupError: string | null;
 }
 
@@ -48,6 +49,7 @@ const initialState: InitialState = {
   loginLoading: false,
   loginError: null,
   signupLoading: false,
+  signupDone: false,
   signupError: null,
 };
 
@@ -56,6 +58,7 @@ interface Me {
   nickname: string;
   Followers: [];
   Followings: [];
+  Posts: [];
 }
 
 const parseMe = (data: Me): Me => {
@@ -64,6 +67,7 @@ const parseMe = (data: Me): Me => {
     nickname: data.nickname,
     Followers: data.Followers,
     Followings: data.Followings,
+    Posts: data.Posts,
   };
 };
 
@@ -92,12 +96,14 @@ export default function user(
         me: null,
         error: null,
         signupLoading: true,
+        signupDone: false,
         signupError: null,
       };
     case signup_success:
       return {
         ...state,
         signupLoading: false,
+        signupDone: true,
       };
     case signup_failure:
       return {

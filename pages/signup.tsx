@@ -8,15 +8,18 @@ import Head from 'next/head';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const SignUp = () => {
   const { state, handleOnChange } = useForm();
+  const router = useRouter();
   const { email, nickname, password } = state;
   const dispatch = useDispatch();
   const signupError = useSelector((state: rootState) => state.user.signupError);
   const signupLoading = useSelector(
     (state: rootState) => state.user.signupLoading
   );
+  const signupDone = useSelector((state: rootState) => state.user.signupDone);
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState(false);
@@ -64,6 +67,12 @@ const SignUp = () => {
       alert(signupError);
     }
   }, [signupError]);
+
+  useEffect(() => {
+    if (signupDone) {
+      router.replace('/');
+    }
+  }, [signupDone]);
 
   return (
     <Layout>

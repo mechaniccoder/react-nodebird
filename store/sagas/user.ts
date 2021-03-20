@@ -9,13 +9,17 @@ import {
   signup_request,
   signup_success,
 } from '@store/user';
+
 import fetch from 'node-fetch';
+
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
 function loginApi(data: { email: string; password: string }) {
   return fetch('http://localhost:4000/auth/login', {
     method: 'post',
+
     body: JSON.stringify(data),
+
     headers: {
       'Content-Type': 'application/json',
     },
@@ -33,10 +37,10 @@ function loginApi(data: { email: string; password: string }) {
 function* login(action: { type: typeof login_request; payload: any }): any {
   try {
     const res = yield call(loginApi, action.payload);
-    console.log('res', res);
     yield put({ type: login_success, payload: res });
   } catch (error) {
-    yield put({ type: login_failure, payload: error });
+    console.log(error);
+    yield put({ type: login_failure, payload: error.message });
   }
 }
 
@@ -81,6 +85,7 @@ function signupApi(data: {
 function* signup(action: { type: typeof signup_request; payload: any }): any {
   try {
     const res = yield call(signupApi, action.payload);
+    console.log(res);
     yield put({ type: signup_success, payload: res });
   } catch (error) {
     yield put({ type: signup_failure, payload: error.message });

@@ -1,7 +1,8 @@
 import { rootState } from '@store/reducer';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
-import { FC, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginInRequest } from 'store/user';
 import styled from 'styled-components';
@@ -14,10 +15,25 @@ const LoginForm: FC = () => {
   const loginLoading = useSelector(
     (state: rootState) => state.user.loginLoading
   );
+  const loginError = useSelector((state: rootState) => state.user.loginError);
+  const me = useSelector((state: rootState) => state.user.me);
+  const router = useRouter();
 
   const onSubmit = useCallback(() => {
     dispatch(loginInRequest(email, password));
   }, [dispatch, email, password]);
+
+  useEffect(() => {
+    if (loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
+
+  useEffect(() => {
+    if (me?.id) {
+      router.replace('/');
+    }
+  }, [me]);
 
   return (
     <Form onFinish={onSubmit}>

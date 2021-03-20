@@ -9,17 +9,6 @@ import { rootState } from '@store/reducer';
 const Profile = () => {
   const me = useSelector((state: rootState) => state.user.me);
 
-  const follwings = [
-    { nickname: '여명' },
-    { nickname: '승환' },
-    { nickname: '성하' },
-  ];
-  const follwers = [
-    { nickname: '준영' },
-    { nickname: '상규' },
-    { nickname: '헬로' },
-  ];
-
   if (!me) {
     return <Layout>로그인하세요.</Layout>;
   }
