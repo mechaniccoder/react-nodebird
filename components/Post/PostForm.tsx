@@ -8,9 +8,10 @@ export default function PostForm() {
   const [text, setText] = useState('');
   const imageInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const me = useSelector((state: rootState) => state.user.me);
   const onSubmit = useCallback(() => {
-    dispatch(addPost());
-  }, []);
+    dispatch(addPost(String(me?.id), text));
+  }, [text]);
   const { imagePaths } = useSelector((state: rootState) => state.post);
 
   const onChangeText = useCallback(

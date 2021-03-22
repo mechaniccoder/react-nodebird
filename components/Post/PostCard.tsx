@@ -20,7 +20,7 @@ interface Props {
 const PostCard: FC<Props> = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [commentFormVisible, setCommentFormVisible] = useState(false);
-  const id = useSelector((state: rootState) => state.user.me?.id);
+  const me = useSelector((state: rootState) => state.user.me);
 
   const onToggleLike = useCallback(() => {
     setLiked((prev) => !prev);
@@ -33,7 +33,7 @@ const PostCard: FC<Props> = ({ post }) => {
   return (
     <div>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={post.Images?.[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
           liked ? (
@@ -50,7 +50,7 @@ const PostCard: FC<Props> = ({ post }) => {
             key="more"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {post.User.id === me?.id ? (
                   <>
                     <Button>수정</Button>
                     <Button danger>삭제</Button>
