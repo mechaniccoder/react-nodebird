@@ -13,14 +13,20 @@ pipeline {
         echo 'testing the application...'
       }
     }
+    stage("test1") {
+      steps {
+        echo 'test1 the application...'
+      }
+    }
     stage("deploy") {
       steps {
         echo 'deploying the application...'
       }
     }
+    
   }
 }
 
-noe {
+node {
 
 }
