@@ -5,7 +5,7 @@ pipeline {
     stage("Install") {
       steps {
         echo 'Install packages.'
-        nodejs('Node-13.9.0') {
+        nodejs('Node-12') {
           sh 'yarn install'
         }
       }
