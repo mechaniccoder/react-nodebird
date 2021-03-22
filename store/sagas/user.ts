@@ -48,11 +48,25 @@ function* watchLogin() {
   yield takeLatest(login_request, login);
 }
 
+function logoutApi() {
+  return fetch('http://localhost:4000/auth/logout', {
+    method: 'post',
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then((error) => {
+        throw new Error(error);
+      });
+    }
+    return res.json();
+  });
+}
+
 function* logout() {
   try {
+    yield call(logoutApi);
     yield put({ type: logout_success });
   } catch (error) {
-    yield put({ type: logout_failure, payload: error.message });
+    yield put({ type: logout_failure, payload: error });
   }
 }
 
