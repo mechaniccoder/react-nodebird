@@ -4,29 +4,11 @@ pipeline {
   stages {
     stage("build") {
       steps {
-        echo 'building the application...'
+        echo 'Install packages.'
+        nodejs('Node-14.12') {
+          sh 'yarn install'
+        }
       }
     }
-  
-    stage("test") {
-      steps {
-        echo 'testing the application...'
-      }
-    }
-    stage("test1") {
-      steps {
-        echo 'test1 the application...'
-      }
-    }
-    stage("deploy") {
-      steps {
-        echo 'deploying the application...'
-      }
-    }
-    
   }
-}
-
-node {
-
 }
