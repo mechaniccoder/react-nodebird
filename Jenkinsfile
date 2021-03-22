@@ -2,10 +2,10 @@ pipeline {
   agent any
 
   stages {
-    stage("build") {
+    stage("Install") {
       steps {
         echo 'Install packages.'
-        nodejs('Node-14.12') {
+        nodejs('Node-13.9.0') {
           sh 'yarn install'
         }
       }
