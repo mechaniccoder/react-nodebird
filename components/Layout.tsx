@@ -1,18 +1,25 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import Link from 'next/link';
-import { Input, Menu, Row, Col } from 'antd';
+import { Input, Menu, Row, Col, Spin } from 'antd';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from 'store/reducer';
+import { loadUserRequest } from '@store/user';
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface Props {
   children: ReactNode | string;
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const { me } = useSelector(({ user }: rootState) => user);
+  const { me, loadUserLoading } = useSelector(({ user }: rootState) => user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserRequest());
+  }, [dispatch, loadUserRequest]);
 
   return (
     <div>
@@ -43,17 +50,19 @@ const Layout: React.FC<Props> = ({ children }) => {
 
       <RowWrapper gutter={8}>
         <Col xs={24} md={6}>
-          {me ? <UserProfile /> : <LoginForm />}
+          {me ? (
+            <UserProfile />
+          ) : loadUserLoading ? (
+            <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+          ) : (
+            <LoginForm />
+          )}
         </Col>
         <Col xs={24} md={12}>
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <a
-            href="https://mechaniccoder-27705.web.app/"
-            target="_blank"
-            rel="norefferer noopener"
-          >
+          <a href="https://mechaniccoder-27705.web.app/" target="_blank" rel="norefferer noopener">
             Made by Mechaniccoder
           </a>
         </Col>
