@@ -1,10 +1,4 @@
-import {
-  EllipsisOutlined,
-  HeartOutlined,
-  HeartTwoTone,
-  MessageOutlined,
-  RetweetOutlined,
-} from '@ant-design/icons';
+import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
 import { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -33,15 +27,11 @@ const PostCard: FC<Props> = ({ post }) => {
   return (
     <div>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={post.Images?.[0] ? <PostImages images={post.Images} /> : ''}
         actions={[
           <RetweetOutlined key="retweet" />,
           liked ? (
-            <HeartTwoTone
-              key="heart"
-              twoToneColor="#eb2f96"
-              onClick={onToggleLike}
-            />
+            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
@@ -80,11 +70,7 @@ const PostCard: FC<Props> = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment
-                  content={item.text}
-                  author={item.nickname}
-                  avatar={<Avatar>{item.nickname[0]}</Avatar>}
-                />
+                <Comment content={item.text} author={item.nickname} avatar={<Avatar>{item.nickname[0]}</Avatar>} />
               </li>
             )}
           />

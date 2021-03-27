@@ -7,18 +7,20 @@ import { rootState } from 'store/reducer';
 export default function PostForm() {
   const [text, setText] = useState('');
   const imageInput = useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
-  const onSubmit = useCallback(() => {
-    dispatch(addPost());
-  }, []);
+  const me = useSelector((state: rootState) => state.user.me);
   const { imagePaths } = useSelector((state: rootState) => state.post);
 
-  const onChangeText = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement>) => {
-      setText(event.currentTarget.value);
-    },
-    []
-  );
+  const onSubmit = useCallback(() => {
+    console.log('submit');
+    if (!me?.id) return alert('로그인이 필요합니다.');
+    dispatch(addPost({ content: text, userId: me.id }));
+  }, [me, dispatch, addPost, text]);
+
+  const onChangeText = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.currentTarget.value);
+  }, []);
 
   const onClickImageInput = useCallback(() => {
     if (imageInput.current) {
@@ -27,17 +29,8 @@ export default function PostForm() {
   }, []);
 
   return (
-    <Form
-      style={{ margin: '10px 0 20px' }}
-      encType="multipart/form-data"
-      onFinish={onSubmit}
-    >
-      <Input.TextArea
-        value={text}
-        onChange={onChangeText}
-        maxLength={140}
-        placeholder="어떤 일이 있었나요?"
-      />
+    <Form style={{ margin: '10px 0 20px' }} onFinish={onSubmit}>
+      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 일이 있었나요?" />
       <div style={{ marginTop: '6px' }}>
         <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageInput}>이미지 업로드</Button>
