@@ -10,6 +10,10 @@ export const signup_request = 'user/signup_request';
 export const signup_success = 'user/signup_success';
 export const signup_failure = 'user/signup_failure';
 
+export const load_user_request = 'user/load_user_request';
+export const load_user_success = 'user/load_user_success';
+export const load_user_failure = 'user/load_user_failure';
+
 export const loginInRequest = (email: string, password: string) => {
   return { type: login_request, payload: { email, password } };
 };
@@ -18,12 +22,12 @@ export const logOutRequest = () => {
   return { type: logout_request };
 };
 
-export const signupRequest = (data: {
-  email: string;
-  nickname: string;
-  password: string;
-}) => {
+export const signupRequest = (data: { email: string; nickname: string; password: string }) => {
   return { type: signup_request, payload: data };
+};
+
+export const loadUserRequest = () => {
+  return { type: load_user_request };
 };
 
 interface InitialState {
@@ -40,6 +44,8 @@ interface InitialState {
   signupLoading: boolean;
   signupDone: boolean;
   signupError: string | null;
+  loadUserLoading: boolean;
+  loadUserError: string | null;
 }
 
 const initialState: InitialState = {
@@ -51,6 +57,8 @@ const initialState: InitialState = {
   signupLoading: false,
   signupDone: false,
   signupError: null,
+  loadUserLoading: false,
+  loadUserError: null,
 };
 
 interface Me {
@@ -81,14 +89,14 @@ interface Action {
     | typeof logout_failure
     | typeof signup_request
     | typeof signup_success
-    | typeof signup_failure;
+    | typeof signup_failure
+    | typeof load_user_request
+    | typeof load_user_success
+    | typeof load_user_failure;
   payload: any;
 }
 
-export default function user(
-  state = initialState,
-  action: Action
-): InitialState {
+export default function user(state = initialState, action: Action): InitialState {
   switch (action.type) {
     case signup_request:
       return {
@@ -140,19 +148,38 @@ export default function user(
         me: null,
         error: null,
       };
-    case 'user/logout_success':
+    case logout_success:
       return {
         ...state,
         loading: false,
         me: null,
         error: null,
       };
-    case 'user/logout_failure':
+    case logout_failure:
       return {
         ...state,
         loading: false,
         me: state.me,
         error: action.payload,
+      };
+    case load_user_request:
+      return {
+        ...state,
+        loadUserLoading: true,
+        loadUserError: null,
+      };
+    case load_user_success:
+      return {
+        ...state,
+        loadUserLoading: false,
+        me: action.payload,
+        loadUserError: null,
+      };
+    case load_user_failure:
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserError: action.payload,
       };
     default:
       return state;

@@ -1,14 +1,20 @@
 import { MainPost } from 'type';
 
 export interface InitialPost {
-  loading: boolean;
+  postLoading: boolean;
+  postError: string | null;
+  commentLoading: boolean;
+  commentError: string | null;
   mainPosts: MainPost[];
   imagePaths: string[];
   postAdded: boolean;
 }
 
 const initialPost: InitialPost = {
-  loading: false,
+  postLoading: false,
+  postError: null,
+  commentLoading: false,
+  commentError: null,
   mainPosts: [
     {
       id: 1,
@@ -61,32 +67,61 @@ const dummyPost: MainPost = {
   ],
 };
 
-const ADD_POST_REQUEST = 'post/add_post_request';
-const ADD_POST_SUCCESS = 'post/add_post_success';
-const ADD_POST_FAILURE = 'post/add_post_failure';
+export const ADD_POST_REQUEST = 'post/add_post_request';
+export const ADD_POST_SUCCESS = 'post/add_post_success';
+export const ADD_POST_FAILURE = 'post/add_post_failure';
+export const ADD_COMMENT_REQUEST = 'post/comment_post_request';
+export const ADD_COMMENT_SUCCESS = 'post/comment_post_success';
+export const ADD_COMMENT_FAILURE = 'post/comment_post_failure';
 
-export const addPost = (data: MainPost) => ({
+export const addPost = (data: { content: string; userId: number }) => ({
   type: ADD_POST_REQUEST,
   payload: data,
 });
 
-export default function post(state = initialPost, action: any): InitialPost {
+export const addComment = (data: any) => ({
+  type: ADD_COMMENT_REQUEST,
+  payload: data,
+});
+
+export default function post(state = initialPost, action: { type: string; payload: any }): InitialPost {
   switch (action.type) {
     case ADD_POST_REQUEST:
       return {
         ...state,
-        loading: true,
+        postLoading: true,
+        postError: null,
       };
     case ADD_POST_SUCCESS:
       return {
         ...state,
         mainPosts: [action.payload, ...state.mainPosts],
-        loading: false,
+        postLoading: false,
       };
     case ADD_POST_FAILURE:
       return {
         ...state,
-        loading: false,
+        postLoading: false,
+      };
+    case ADD_COMMENT_REQUEST:
+      return {
+        ...state,
+        commentLoading: true,
+        commentError: null,
+      };
+    case ADD_COMMENT_SUCCESS:
+      const post = state.mainPosts.find((post) => post.id === action.payload.PostId);
+      console.log(post);
+      return {
+        ...state,
+        mainPosts: [action.payload, ...state.mainPosts],
+        commentLoading: false,
+        commentError: null,
+      };
+    case ADD_COMMENT_FAILURE:
+      return {
+        ...state,
+        commentLoading: false,
       };
     default:
       return state;
