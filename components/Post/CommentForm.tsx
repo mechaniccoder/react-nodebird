@@ -1,3 +1,4 @@
+import { addComment } from '@store/post';
 import { rootState } from '@store/reducer';
 import { Button, Form, Input } from 'antd';
 import useInput from 'hooks/useInput';
@@ -17,7 +18,13 @@ function CommentForm({ post }: Props) {
   const { me } = useSelector((state: rootState) => state.user);
   const dispatch = useDispatch();
 
-  const onSubmitComment = useCallback(() => {}, [commentValue]);
+  const onSubmitComment = useCallback(() => {
+    if (!me?.id) return alert('로그인이 필요합니다.');
+    dispatch(
+      addComment({ content: commentValue, userId: me?.id, postId: post.id })
+    );
+  }, [commentValue, dispatch]);
+
   return (
     <Form onFinish={onSubmitComment}>
       <Form.Item style={{ margin: 0 }}>
