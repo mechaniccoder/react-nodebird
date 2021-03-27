@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import Head from 'next/head';
 import 'antd/dist/antd.css';
 import { useStore } from '../store';
-import withReduxSaga from 'next-redux-saga';
+import axios from 'axios';
 
 interface Props {
   Component: any;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 const App: FC<Props> = ({ Component, pageProps }) => {
+  axios.defaults.baseURL = 'http://localhost:4000';
+  axios.defaults.withCredentials = true;
   const store = useStore(pageProps.initialReduxState);
 
   return (
