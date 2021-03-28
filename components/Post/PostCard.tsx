@@ -70,7 +70,7 @@ const PostCard: FC<Props> = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment content={item.text} author={item.nickname} avatar={<Avatar>{item.nickname[0]}</Avatar>} />
+                <Comment content={item.content} author={item.UserId} avatar={<Avatar>{item.UserId}</Avatar>} />
               </li>
             )}
           />

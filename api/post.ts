@@ -14,3 +14,7 @@ export const addCommentApi = (content: string, userId: string | number, postId: 
     postId,
   });
 };
+
+export const loadPostApi = () => {
+  return axios.get('/post');
+};
