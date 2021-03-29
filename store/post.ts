@@ -7,6 +7,10 @@ export interface InitialPost {
   commentError: string | null;
   loadPostLoading: boolean;
   loadPostError: string | null;
+  likePostLoading: boolean;
+  likePostError: string | null;
+  unlikePostLoading: boolean;
+  unlikePostError: string | null;
   mainPosts: MainPost[];
   imagePaths: string[];
   postAdded: boolean;
@@ -19,6 +23,10 @@ const initialPost: InitialPost = {
   commentError: null,
   loadPostLoading: false,
   loadPostError: null,
+  likePostLoading: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostError: null,
   mainPosts: [
     {
       id: 1,
@@ -57,6 +65,12 @@ export const ADD_COMMENT_FAILURE = 'post/comment_post_failure';
 export const LOAD_POST_REQUEST = 'post/load_post_request';
 export const LOAD_POST_SUCCESS = 'post/load_post_success';
 export const LOAD_POST_FAILURE = 'post/load_post_failure';
+export const LIKE_POST_REQUEST = 'post/LIKE_POST_request';
+export const LIKE_POST_SUCCESS = 'post/LIKE_POST_success';
+export const LIKE_POST_FAILURE = 'post/LIKE_POST_failure';
+export const UNLIKE_POST_REQUEST = 'post/UNLIKE_POST_request';
+export const UNLIKE_POST_SUCCESS = 'post/UNLIKE_POST_success';
+export const UNLIKE_POST_FAILURE = 'post/UNLIKE_POST_failure';
 
 export const addPost = (data: { content: string; userId: number }) => ({
   type: ADD_POST_REQUEST,
@@ -70,6 +84,16 @@ export const addComment = (data: any) => ({
 
 export const loadPost = () => ({
   type: LOAD_POST_REQUEST,
+});
+
+export const likePost = (PostId: number) => ({
+  type: LIKE_POST_REQUEST,
+  payload: PostId,
+});
+
+export const unlikePost = (PostId: number) => ({
+  type: UNLIKE_POST_REQUEST,
+  payload: PostId,
 });
 
 export default function post(state = initialPost, action: { type: string; payload: any }): InitialPost {
@@ -134,6 +158,44 @@ export default function post(state = initialPost, action: { type: string; payloa
         ...state,
         loadPostLoading: false,
         loadPostError: action.payload,
+      };
+
+    case LIKE_POST_REQUEST:
+      return {
+        ...state,
+        likePostLoading: true,
+        likePostError: null,
+      };
+    case LIKE_POST_SUCCESS:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostError: null,
+      };
+    case LIKE_POST_FAILURE:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostError: action.payload,
+      };
+
+    case UNLIKE_POST_REQUEST:
+      return {
+        ...state,
+        unlikePostLoading: true,
+        unlikePostError: null,
+      };
+    case UNLIKE_POST_SUCCESS:
+      return {
+        ...state,
+        unlikePostLoading: false,
+        unlikePostError: null,
+      };
+    case UNLIKE_POST_FAILURE:
+      return {
+        ...state,
+        unlikePostLoading: false,
+        unlikePostError: action.payload,
       };
     default:
       return state;

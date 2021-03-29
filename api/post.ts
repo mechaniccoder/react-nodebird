@@ -18,3 +18,11 @@ export const addCommentApi = (content: string, userId: string | number, postId: 
 export const loadPostApi = () => {
   return axios.get('/post');
 };
+
+export const postLikeApi = (PostId: string) => {
+  return axios.patch(`/post/${PostId}/like`);
+};
+
+export const postUnLikeApi = (PostId: string) => {
+  return axios.delete(`/post/${PostId}/like`);
+};
