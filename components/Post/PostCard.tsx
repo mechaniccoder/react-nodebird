@@ -65,12 +65,16 @@ const PostCard: FC<Props> = ({ post }) => {
         <div>
           <CommentForm post={post} />
           <List
-            header={`${post.Comments.length}개의 댓글이 있습니다.`}
+            header={`${post.Comments?.length || 0}개의 댓글이 있습니다.`}
             itemLayout="horizontal"
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment content={item.content} author={item.UserId} avatar={<Avatar>{item.UserId}</Avatar>} />
+                <Comment
+                  content={item.content}
+                  author={item.User.nickname}
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                />
               </li>
             )}
           />
