@@ -27,10 +27,7 @@ const initialPost: InitialPost = {
         nickname: '승환',
       },
       content: '첫 게시물 #nextJs #docker',
-      Comments: [
-        { id: 1, content: 'thank you', nickname: 'sanggyu' },
-        { id: 2, content: 'Hello world~!', nickname: 'chanyoung' },
-      ],
+      Comments: [],
       Images: [
         {
           src:

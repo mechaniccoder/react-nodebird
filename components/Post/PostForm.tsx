@@ -13,7 +13,6 @@ export default function PostForm() {
   const { imagePaths } = useSelector((state: rootState) => state.post);
 
   const onSubmit = useCallback(() => {
-    console.log('submit');
     if (!me?.id) return alert('로그인이 필요합니다.');
     dispatch(addPost({ content: text, userId: me.id }));
   }, [me, dispatch, addPost, text]);

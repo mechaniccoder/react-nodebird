@@ -18,7 +18,6 @@ import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 function* login(action: { type: typeof login_request; payload: any }): any {
   try {
     const { email, password } = action.payload;
-    console.log(email, password);
     const res = yield call(loginApi, email, password);
     yield put({ type: login_success, payload: res.data });
   } catch (error) {
