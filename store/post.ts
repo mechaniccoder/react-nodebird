@@ -36,6 +36,7 @@ const initialPost: InitialPost = {
       },
       content: '첫 게시물 #nextJs #docker',
       Comments: [],
+      LikeUsers: [],
       Images: [
         {
           src:
@@ -169,6 +170,16 @@ export default function post(state = initialPost, action: { type: string; payloa
     case LIKE_POST_SUCCESS:
       return {
         ...state,
+        mainPosts: state.mainPosts.map((p) =>
+          p.id === action.payload.PostId
+            ? {
+                ...p,
+                LikeUsers: p.LikeUsers
+                  ? [...p.LikeUsers, { id: action.payload.UserId }]
+                  : [{ id: action.payload.UserId }],
+              }
+            : p
+        ),
         likePostLoading: false,
         likePostError: null,
       };
@@ -188,6 +199,14 @@ export default function post(state = initialPost, action: { type: string; payloa
     case UNLIKE_POST_SUCCESS:
       return {
         ...state,
+        mainPosts: state.mainPosts.map((p) =>
+          p.id === action.payload.PostId
+            ? {
+                ...p,
+                LikeUsers: p.LikeUsers.filter((user) => user.id !== action.payload.UserId),
+              }
+            : p
+        ),
         unlikePostLoading: false,
         unlikePostError: null,
       };

@@ -1,7 +1,8 @@
 import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
+import { likePost, unlikePost } from '@store/post';
 import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
 import { FC, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from 'store/reducer';
 import { MainPost } from 'type';
 import CommentForm from './CommentForm';
@@ -12,13 +13,18 @@ interface Props {
 }
 
 const PostCard: FC<Props> = ({ post }) => {
-  const [liked, setLiked] = useState(false);
   const [commentFormVisible, setCommentFormVisible] = useState(false);
-  const id = useSelector((state: rootState) => state.user.me?.id);
+  const dispatch = useDispatch();
+  const myId = useSelector((state: rootState) => state.user.me?.id);
+  const isLike = post.LikeUsers.some((user) => user.id === myId);
 
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
-  }, []);
+  const likeOnClick = useCallback(() => {
+    dispatch(likePost(post.id));
+  }, [dispatch, post.id, likePost]);
+
+  const unlikeOnClick = useCallback(() => {
+    dispatch(unlikePost(post.id));
+  }, [dispatch, post.id, likePost]);
 
   const onToggleCommentForm = useCallback(() => {
     setCommentFormVisible((prev) => !prev);
@@ -30,17 +36,17 @@ const PostCard: FC<Props> = ({ post }) => {
         cover={post.Images?.[0] ? <PostImages images={post.Images} /> : ''}
         actions={[
           <RetweetOutlined key="retweet" />,
-          liked ? (
-            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
+          isLike ? (
+            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={unlikeOnClick} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={likeOnClick} />
           ),
           <MessageOutlined key="message" onClick={onToggleCommentForm} />,
           <Popover
             key="more"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {myId && post.User.id === myId ? (
                   <>
                     <Button>수정</Button>
                     <Button danger>삭제</Button>

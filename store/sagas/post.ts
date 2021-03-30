@@ -68,7 +68,7 @@ function* watchLoadPost() {
 function* postLike(action: { type: typeof LIKE_POST_REQUEST; payload: any }): any {
   try {
     const res = yield call(postLikeApi, action.payload);
-    yield put({ type: LIKE_POST_SUCCESS, payload: res.data });
+    yield put({ type: LIKE_POST_SUCCESS, payload: res.data[0] });
   } catch (error) {
     yield put({ type: LIKE_POST_FAILURE, payload: error.message });
   }
