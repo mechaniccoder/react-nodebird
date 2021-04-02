@@ -20,14 +20,12 @@ const FollowList: FC<Props> = ({ title, data }) => {
       header={<div>{title}</div>}
       bordered
       loadMore={
-        <div
-          style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
-        >
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
           <Button>더보기</Button>
         </div>
       }
       dataSource={data}
-      renderItem={(item: DataItem) => (
+      renderItem={(item: any, index: number) => (
         <List.Item>
           <Card actions={[<StopOutlined />]}>
             <Card.Meta description={item.nickname} />

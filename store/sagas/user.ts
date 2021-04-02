@@ -11,8 +11,11 @@ import {
   signup_failure,
   signup_request,
   signup_success,
+  update_nickname_failure,
+  update_nickname_request,
+  update_nickname_success,
 } from '@store/user';
-import { loadUserApi, loginApi, logoutApi, signupApi } from 'api/auth';
+import { loadUserApi, loginApi, logoutApi, signupApi, updateNicknameApi } from 'api/auth';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
 function* login(action: { type: typeof login_request; payload: any }): any {
@@ -71,6 +74,19 @@ function* watchLoadUser() {
   yield takeLatest(load_user_request, loadUser);
 }
 
+function* updateNickname(action: { type: typeof update_nickname_request; payload: string }): any {
+  try {
+    const res = yield call(updateNicknameApi, action.payload);
+    yield put({ type: update_nickname_success, payload: res.data });
+  } catch (err) {
+    yield put({ type: update_nickname_failure, payload: err.message });
+  }
+}
+
+function* watchUpdateNickname() {
+  yield takeLatest(update_nickname_request, updateNickname);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLogout), fork(watchLogin), fork(watchSignup), fork(watchLoadUser)]);
+  yield all([fork(watchLogout), fork(watchLogin), fork(watchSignup), fork(watchLoadUser), fork(watchUpdateNickname)]);
 }

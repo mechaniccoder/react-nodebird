@@ -14,6 +14,10 @@ export const load_user_request = 'user/load_user_request';
 export const load_user_success = 'user/load_user_success';
 export const load_user_failure = 'user/load_user_failure';
 
+export const update_nickname_request = 'user/update_nickname_request';
+export const update_nickname_success = 'user/update_nickname_success';
+export const update_nickname_failure = 'user/update_nickname_failure';
+
 export const loginInRequest = (email: string, password: string) => {
   return { type: login_request, payload: { email, password } };
 };
@@ -46,6 +50,8 @@ interface InitialState {
   signupError: string | null;
   loadUserLoading: boolean;
   loadUserError: string | null;
+  updateNicknameLoading: boolean;
+  updateNicknameError: string | null;
 }
 
 const initialState: InitialState = {
@@ -59,6 +65,8 @@ const initialState: InitialState = {
   signupError: null,
   loadUserLoading: false,
   loadUserError: null,
+  updateNicknameLoading: false,
+  updateNicknameError: null,
 };
 
 interface Me {
@@ -92,7 +100,10 @@ interface Action {
     | typeof signup_failure
     | typeof load_user_request
     | typeof load_user_success
-    | typeof load_user_failure;
+    | typeof load_user_failure
+    | typeof update_nickname_request
+    | typeof update_nickname_success
+    | typeof update_nickname_failure;
   payload: any;
 }
 
@@ -180,6 +191,25 @@ export default function user(state = initialState, action: Action): InitialState
         ...state,
         loadUserLoading: false,
         loadUserError: action.payload,
+      };
+    case update_nickname_request:
+      return {
+        ...state,
+        updateNicknameLoading: true,
+        updateNicknameError: null,
+      };
+    case update_nickname_success:
+      return {
+        ...state,
+        me: { ...state.me!, nickname: action.payload.nickname },
+        updateNicknameLoading: false,
+        updateNicknameError: null,
+      };
+    case update_nickname_failure:
+      return {
+        ...state,
+        updateNicknameLoading: false,
+        updateNicknameError: action.payload,
       };
     default:
       return state;

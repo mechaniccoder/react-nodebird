@@ -226,7 +226,7 @@ export default function post(state = initialPost, action: { type: string; payloa
     case REMOVE_POST_REQUEST:
       return {
         ...state,
-        removePostLoading: false,
+        removePostLoading: true,
         removePostError: null,
       };
     case REMOVE_POST_SUCCESS:

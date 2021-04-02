@@ -22,3 +22,9 @@ export const logoutApi = () => {
 export const loadUserApi = () => {
   return axios.get('/auth');
 };
+
+export const updateNicknameApi = (nickname: string) => {
+  return axios.patch('/auth/nickname', {
+    nickname,
+  });
+};
