@@ -11,11 +11,14 @@ import {
   LOAD_POST_FAILURE,
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
+  REMOVE_POST_REQUEST,
+  REMOVE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
 } from '@store/post';
-import { addCommentApi, addPostApi, loadPostApi, postLikeApi, postUnLikeApi } from 'api/post';
+import { addCommentApi, addPostApi, loadPostApi, postLikeApi, postUnLikeApi, removePostApi } from 'api/post';
 import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
 
 function* addPost(action: { type: string; payload: { content: string; userId: string | number } }): any {
@@ -91,6 +94,19 @@ function* watchUnLikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, postUnlike);
 }
 
+function* removePost(action: { type: typeof REMOVE_POST_REQUEST; payload: number }): any {
+  try {
+    const res = yield removePostApi(action.payload);
+    yield put({ type: REMOVE_POST_SUCCESS, payload: res.data });
+  } catch (err) {
+    yield put({ type: REMOVE_POST_FAILURE, payload: err.message });
+  }
+}
+
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -98,5 +114,6 @@ export default function* postSaga() {
     fork(watchLoadPost),
     fork(watchLikePost),
     fork(watchUnLikePost),
+    fork(watchRemovePost),
   ]);
 }

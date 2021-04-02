@@ -26,3 +26,7 @@ export const postLikeApi = (PostId: string) => {
 export const postUnLikeApi = (PostId: string) => {
   return axios.delete(`/post/${PostId}/unlike`);
 };
+
+export const removePostApi = (PostId: number) => {
+  return axios.delete(`/post/${PostId}`);
+};

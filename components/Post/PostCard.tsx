@@ -1,5 +1,5 @@
 import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
-import { likePost, unlikePost } from '@store/post';
+import { likePost, REMOVE_POST_REQUEST, unlikePost } from '@store/post';
 import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
 import { FC, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +30,10 @@ const PostCard: FC<Props> = ({ post }) => {
     setCommentFormVisible((prev) => !prev);
   }, []);
 
+  const removePost = useCallback(() => {
+    dispatch({ type: REMOVE_POST_REQUEST, payload: post.id });
+  }, [dispatch, post]);
+
   return (
     <div>
       <Card
@@ -49,7 +53,9 @@ const PostCard: FC<Props> = ({ post }) => {
                 {myId && post.User.id === myId ? (
                   <>
                     <Button>수정</Button>
-                    <Button danger>삭제</Button>
+                    <Button danger onClick={removePost}>
+                      삭제
+                    </Button>
                   </>
                 ) : (
                   <Button>신고</Button>

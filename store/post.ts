@@ -11,6 +11,8 @@ export interface InitialPost {
   likePostError: string | null;
   unlikePostLoading: boolean;
   unlikePostError: string | null;
+  removePostLoading: boolean;
+  removePostError: string | null;
   mainPosts: MainPost[];
   imagePaths: string[];
   postAdded: boolean;
@@ -27,6 +29,8 @@ const initialPost: InitialPost = {
   likePostError: null,
   unlikePostLoading: false,
   unlikePostError: null,
+  removePostLoading: false,
+  removePostError: null,
   mainPosts: [
     {
       id: 1,
@@ -72,6 +76,9 @@ export const LIKE_POST_FAILURE = 'post/LIKE_POST_failure';
 export const UNLIKE_POST_REQUEST = 'post/UNLIKE_POST_request';
 export const UNLIKE_POST_SUCCESS = 'post/UNLIKE_POST_success';
 export const UNLIKE_POST_FAILURE = 'post/UNLIKE_POST_failure';
+export const REMOVE_POST_REQUEST = 'post/REMOVE_POST_request';
+export const REMOVE_POST_SUCCESS = 'post/REMOVE_POST_success';
+export const REMOVE_POST_FAILURE = 'post/REMOVE_POST_failure';
 
 export const addPost = (data: { content: string; userId: number }) => ({
   type: ADD_POST_REQUEST,
@@ -215,6 +222,25 @@ export default function post(state = initialPost, action: { type: string; payloa
         ...state,
         unlikePostLoading: false,
         unlikePostError: action.payload,
+      };
+    case REMOVE_POST_REQUEST:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: null,
+      };
+    case REMOVE_POST_SUCCESS:
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((p) => p.id !== action.payload.PostId),
+        removePostLoading: false,
+        removePostError: null,
+      };
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.payload,
       };
     default:
       return state;
